@@ -55,6 +55,8 @@ class LibraryBook(models.Model):
         domain=[],
     )
 
+    category_id = fields.Many2one('library.book.category')
+
     #need to restart odoo to pick up name_get
     def name_get(self):
         result = []
