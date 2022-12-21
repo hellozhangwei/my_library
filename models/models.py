@@ -42,6 +42,11 @@ class LibraryBook(models.Model):
 
     #用于对记录启用存档/取消存档功能
     active = fields.Boolean('Active', default=True)
+
+    cost_price = fields.Float('Book Cost', digits='Book Price')
+    currency_id = fields.Many2one('res.currency', string='Currency')
+    retail_price = fields.Monetary('Retail Price', currency_field='currency_id',)
+
     #need to restart odoo to pick up name_get
     def name_get(self):
         result = []

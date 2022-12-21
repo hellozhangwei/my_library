@@ -31,6 +31,11 @@
                         </group>
                     </group>
                     <group>
+                        <field name="cost_price"/>
+                        <field name="retail_price"/>
+                        <field name="currency_id"/>
+                    </group>
+                    <group>
                         <field name="description"/>
                     </group>
                 </form>
