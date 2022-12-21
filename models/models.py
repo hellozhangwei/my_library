@@ -47,6 +47,14 @@ class LibraryBook(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency')
     retail_price = fields.Monetary('Retail Price', currency_field='currency_id',)
 
+    publisher_id = fields.Many2one(
+        'res.partner', string='Publisher',
+        # optional:
+        ondelete='set null',
+        context={},
+        domain=[],
+    )
+
     #need to restart odoo to pick up name_get
     def name_get(self):
         result = []
@@ -54,3 +62,7 @@ class LibraryBook(models.Model):
             rec_name = "%s (%s)" % (record.name, record.date_release)
             result.append((record.id, rec_name))
         return result
+
+    class ResPartner(models.Model):
+        _inherit = 'res.partner'
+        published_book_ids = fields.One2many('library.book', 'publisher_id', string='Published Books')
