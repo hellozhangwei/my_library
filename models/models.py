@@ -40,6 +40,8 @@ class LibraryBook(models.Model):
     pages = fields.Integer('Number of Pages', groups='base.group_user', states={'lost': [('readonly', True)]}, help='Total book page count', company_dependent=False)
     reader_rating = fields.Float('Reader Average Rating', digits=(14, 4)) # Optional precision (total, decimals)
 
+    #用于对记录启用存档/取消存档功能
+    active = fields.Boolean('Active', default=True)
     #need to restart odoo to pick up name_get
     def name_get(self):
         result = []
