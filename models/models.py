@@ -184,6 +184,12 @@ class LibraryBook(models.Model):
         selection='_referencable_models',
         string='Reference Document')
 
+    def log_all_library_members(self):
+        library_member_model = self.env['library.member']  # 这是library.member的空记录集
+        all_members = library_member_model.search([])
+        print('ALL MEMBERS:', all_members)
+        return True
+
     class ResPartner(models.Model):
         _inherit = 'res.partner'
         published_book_ids = fields.One2many('library.book', 'publisher_id', string='Published Books')
