@@ -67,8 +67,8 @@
             <field name="model">library.book.category</field>
             <field name="arch" type="xml">
                 <form>
-                    <field name="name"/>
-                    <field name="parent_id"/>
+                    <group><field name="name"/><field name="parent_id"/></group>
+                    <group><field name="child_ids" widget="one2many"/> </group>
                 </form>
             </field>
         </record>
