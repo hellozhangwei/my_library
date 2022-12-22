@@ -47,6 +47,9 @@
                         <field name="currency_id"/>
                     </group>
                     <group>
+                        <field name="ref_doc_id"/>
+                    </group>
+                    <group>
                         <field name="description"/>
                     </group>
                 </form>

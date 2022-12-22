@@ -124,6 +124,16 @@ class LibraryBook(models.Model):
         new_op = operator_map.get(operator, operator)
         return [('date_release', new_op, value_date)]
 
+    @api.model
+    def _referencable_models(self):
+        models = self.env['ir.model'].search([
+            ('field_id.name', '=', 'message_ids')])
+        return [(x.model, x.name) for x in models]
+
+    ref_doc_id = fields.Reference(
+        selection='_referencable_models',
+        string='Reference Document')
+
     class ResPartner(models.Model):
         _inherit = 'res.partner'
         published_book_ids = fields.One2many('library.book', 'publisher_id', string='Published Books')
