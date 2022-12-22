@@ -137,3 +137,40 @@ class LibraryBook(models.Model):
     class ResPartner(models.Model):
         _inherit = 'res.partner'
         published_book_ids = fields.One2many('library.book', 'publisher_id', string='Published Books')
+
+        authored_book_ids = fields.Many2many('library.book', string='Authored Books')
+        count_books = fields.Integer('Number of Authored Books', compute='_compute_count_books')
+
+        @api.depends('authored_book_ids')
+        def _compute_count_books(self):
+            for r in self:
+                r.count_books = len(r.authored_book_ids)
+
+    #原型继承，但在实践中鲜有使用, 此模型有其自己的数据表
+    # class LibraryMember(models.Model):
+    #     _inherit = 'res.partner'
+    #     _name = 'library.member'
+
+    #代理继承, _inherits, 根据已有模型创建一个新模型。它还支持多态继承，可以继承两个其它的模型。
+    #图书会员，我们需要Partner模型中的所有身份和地址数据，也想保留一些有关会员的信息：起始日期、结束日期和会员卡号。
+    #向Partner模型添加这些字段不是最好的方案，因为对于非会员的成员们无需使用到这些。使用一个带有额外字段的新模型继承Partner模型则会非常好。
+    #会员记录自动关联到一个新的Partner记录。它仅是一个 many-to-one关联，但代理机制注入了一些魔力来让Partner的字段看起来就好像属于Member的记录一样，新的Partner记录会自动和新的会员记录一同创建。
+    class LibraryMember(models.Model):
+        _name = 'library.member'
+        _inherits = {'res.partner': 'partner_id'}
+        partner_id = fields.Many2one('res.partner', ondelete='cascade')
+
+        date_start = fields.Date('Member Since')
+        date_end = fields.Date('Termination Date')
+        member_number = fields.Char()
+        date_of_birth = fields.Date('Date of birth')
+
+    #继承代理有一个快捷方式。代替创建一个_inherits字典，可以在Many2one字段定义中使用delegate=True属性。
+    #关于代理继承一个值得注意的用例是用户模型 res.users。它继承自成员（res.partner）!!!
+    # class LibraryMember(models.Model):
+    #     _name = 'library.member'
+    #     partner_id = fields.Many2one('res.partner', ondelete='cascade', delegate=True)
+    #     date_start = fields.Date('Member Since')
+    #     date_end = fields.Date('Termination Date')
+    #     member_number = fields.Char()
+    #     date_of_birth = fields.Date('Date of birth')
