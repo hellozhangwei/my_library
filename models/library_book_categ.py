@@ -12,7 +12,8 @@ class BaseArchive(models.AbstractModel):
 class BookCategory(models.Model):
     _name = 'library.book.category'
     _inherit = ['base.archive']
-    name = fields.Char('Category')
+    name = fields.Char('Category Name')
+    description = fields.Text(' Category Description')
     parent_id = fields.Many2one('library.book.category', string='Parent Category', ondelete='restrict', index=True)
 
     #By convention, One2many fields have the _ids suffix.
