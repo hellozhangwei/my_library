@@ -56,6 +56,13 @@ class LibraryBook(models.Model):
         domain=[],
     )
 
+    #此处设置关联字段为只读，如果不这么做，字段将为可写，用户可能会修改其值。
+    #关联字段实际上是计算字段，作为一个计算字段，意味着也可以使用store属性
+    publisher_city = fields.Char(
+        'Publisher City',
+        related='publisher_id.city',
+        readonly=True)
+
     category_id = fields.Many2one('library.book.category')
 
     #need to restart odoo to pick up name_get
