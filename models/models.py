@@ -20,6 +20,8 @@
 
 from odoo import models, fields, api
 from datetime import timedelta
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 class LibraryBook(models.Model):
     _name = 'library.book'
@@ -33,7 +35,13 @@ class LibraryBook(models.Model):
     notes = fields.Text('Internal Notes')
 
     #need to restart odoo
-    state = fields.Selection([('draft', 'Not Available'), ('available', 'Available'), ('lost', 'Lost')], 'State', default="draft")
+    state = fields.Selection([
+                                ('draft', 'Not Available'),
+                                ('available', 'Available'),
+                                ('lost', 'Lost'),
+                                ('borrowed', 'Borrowed'),
+                              ],
+                             'State', default="draft")
     description = fields.Html('Description', sanitize=True, strip_style=False)
     cover = fields.Binary('Book Cover')
     out_of_print = fields.Boolean('Out of Print?')
@@ -77,6 +85,48 @@ class LibraryBook(models.Model):
         ('name_uniq', 'UNIQUE(name)', 'Book title must be unique.'),
         ('positive_page', 'CHECK(pages>0)', 'No. of pages must be positive')
     ]
+
+    #在编写一个新方法时，如果不使用装饰器，方法会对记录集执行。
+    #@api.model类似于Python的@classmethod
+    #api.model is used when you need to do something with model itself and don't need to modify/check some model's record/records.
+    @api.model
+    def is_allowed_transition(self, old_state, new_state):
+        allowed = [('draft', 'available'),
+                   ('available', 'borrowed'),
+                   ('borrowed', 'available'),
+                   ('available', 'lost'),
+                   ('borrowed', 'lost'),
+                   ('lost', 'available')]
+        return (old_state, new_state) in allowed
+
+    #For multiple records api.multi is used, where self is recordset and it can be iterated through all records to do something
+    #@api.multi #'multi' is removed from Odoo 13.0 as it will be default
+    def change_state(self, new_state):
+        for book in self:
+            if book.is_allowed_transition(book.state, new_state):
+                book.state = new_state
+            else:
+                msg = _('Moving from %s to %s is not allowed') % (book.state, new_state)
+                raise UserError(msg)
+
+    # The following two are equivalent:
+    # @api.one
+    # def _compute_name(self):
+    #     self.name = "Default Name"
+    #
+    # @api.multi
+    # def print_self_multi(self):
+    #     for record in self:
+    #         record.name = "Default Name"
+
+    def make_available(self):
+        self.change_state('available')
+
+    def make_borrowed(self):
+        self.change_state('borrowed')
+
+    def make_lost(self):
+        self.change_state('lost')
 
     @api.constrains('date_release')
     def _check_release_date(self):
