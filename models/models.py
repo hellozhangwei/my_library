@@ -19,6 +19,7 @@
 
 
 from odoo import models, fields, api
+from datetime import timedelta
 
 class LibraryBook(models.Model):
     _name = 'library.book'
@@ -75,6 +76,46 @@ class LibraryBook(models.Model):
         for record in self:
             if record.date_release and record.date_release > fields.Date.today():
                 raise models.ValidationError('Release date must be in the past')
+
+    age_days = fields.Float(
+        string='Days Since Release',
+        compute='_compute_age',
+        inverse='_inverse_age',
+        search='_search_age',
+        store=False,  # optional 如果store=True，计算后字段值会存储到数据库中，借助@api.depends装饰器，ORM会知道何时需要重新计算并更新这些存储值。你可以把它看作一个持久缓存。如果在计算字段中使用store=True，则无需实再现search方法
+        compute_sudo=False  # optional
+    )
+
+    #@depends装饰器来监测缓存值何时置为无效并重新计算
+    @api.depends('date_release')
+    def _compute_age(self):
+        today = fields.Date.today()
+        for book in self:
+            if book.date_release:
+                delta = today - book.date_release
+                book.age_days = delta.days
+            else:
+                book.age_days = 0
+
+    #计算字段的写操作通过实现inverse函数来添加，inverse是可选属性，如果不想让该计算字段可编辑，可以忽略它。
+    def _inverse_age(self):
+        today = fields.Date.today()
+        for book in self.filtered('date_release'):
+            d = today - timedelta(days=book.age_days)
+            book.date_release = d
+
+    def _search_age(self, operator, value):
+        today = fields.Date.today()
+        value_days = timedelta(days=value)
+        value_date = today - value_days
+        # 运算符转换：
+        # age_days > value -> date < value_date
+        operator_map = {
+            '>': '<', '>=': '<=',
+            '<': '>', '<=': '>=',
+        }
+        new_op = operator_map.get(operator, operator)
+        return [('date_release', new_op, value_date)]
 
     class ResPartner(models.Model):
         _inherit = 'res.partner'
