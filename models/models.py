@@ -190,6 +190,28 @@ class LibraryBook(models.Model):
         print('ALL MEMBERS:', all_members)
         return True
 
+    """
+    Create Method: The create method creates new records. It takes a dictionary of values, applies any defaults we have specified and then inserts the record an returns the new ID.
+
+    New Method: Return a new record instance attached to the current environment and initialized with the provided `value`. The record is *not* created in database, it only exists in memory.
+    
+    **************************************************************************************
+    
+    Write Method:The write method updates existing records. It takes a dictionary of values and applies to all of the ids you pass. 
+    if you pass a list of ids, the values will be written to all ids. For updating a single record, pass a list of one entry, 
+    if you want to do different updates to the records, you have to do multiple write calls. You can also manage related fields with a write.
+    
+    Update Method: Write do not work for records set which are not present in the database. Onchange method returns pseudo-records which do not exist in the database yet. 
+    So set record's field using update() method as calling write() method gives an undefined behavior.
+    """
+    def change_release_date(self):
+        self.ensure_one()
+        self.date_release = fields.Date.today()
+        # 或者用下面代码
+        # self.update({
+        #     'date_release': fields.Date.today()
+        # })
+
     class ResPartner(models.Model):
         _inherit = 'res.partner'
         published_book_ids = fields.One2many('library.book', 'publisher_id', string='Published Books')
