@@ -212,6 +212,19 @@ class LibraryBook(models.Model):
         #     'date_release': fields.Date.today()
         # })
 
+    #search方法仅返回执行搜索的用户拥有访问权限的记录。
+    #如果模型中有名为active的字段，而在搜索条件中并未指定active，那么odoo会隐式地添加一个active=True条件。
+    def find_book(self):
+        domain = [
+            '|',
+            '&', ('name', 'ilike', 'Book Name'),
+            ('category_id.name', 'ilike', 'Category Name'),
+            '&', ('name', 'ilike', 'Book Name 2'),
+            ('category_id.name', 'ilike', 'Category Name 2')
+        ]
+
+        books = self.search(domain)
+
     class ResPartner(models.Model):
         _inherit = 'res.partner'
         published_book_ids = fields.One2many('library.book', 'publisher_id', string='Published Books')
