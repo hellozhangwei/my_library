@@ -33,6 +33,7 @@ class LibraryBook(models.Model):
     date_release = fields.Date('Release Date')
     author_ids = fields.Many2many('res.partner', string='Authors')
     notes = fields.Text('Internal Notes')
+    isbn = fields.Char('ISBN')
 
     #need to restart odoo
     state = fields.Selection([

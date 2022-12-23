@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--SELECT * from ir_model_data where "name" LIKE '%moqui%' ORDER by create_date desc-->
+    <!--每次在标签中使用XML ID时，Odoo会检查该字符串是否带有命名空间（即它是否只包含一个点标记），如果不带有，会添加当前模块名作为命名空间。-->
+    <!--By debug mode then go the form of the record then view metadata from the Debug icon in the top left.-->
+    <record id="moqui_cookbook" model="library.book">
+        <field name="name">Moqui Development Cookbook</field>
+        <field name="short_name">Moqui</field>
+    </record>
+</odoo>
