@@ -1,5 +1,13 @@
 <odoo>
-    <data>
+     <record id="author_dej" model="res.partner">
+        <field name="name">David E Johns</field>
+     </record>
+    <record id="ofbiz_cookbook" model="library.book">
+        <field name="name">Ofbiz Development Cookbook</field>
+        <field name="short_name">Ofbiz</field>
+        <field name="date_release">2020-12-24</field>
+        <field name="author_ids" eval="[(6, 0, [ref('author_dej')])]"/>
+    </record>
 <!--
           <record id="object0" model="my_library.my_library">
             <field name="name">Object 0</field>
@@ -26,5 +34,4 @@
             <field name="value">40</field>
           </record>
 -->
-    </data>
 </odoo>
