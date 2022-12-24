@@ -29,6 +29,7 @@
                         <group>
                             <field name="rent_date"/>
                             <field name="return_date"/>
+                            <field name="expected_return_date"/>
                         </group>
                      </group>
                 </sheet>

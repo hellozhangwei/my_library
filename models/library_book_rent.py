@@ -14,6 +14,7 @@ class LibraryBookRent(models.Model):
                             required=True)
     rent_date = fields.Date(default=fields.Date.today)
     return_date = fields.Date()
+    expected_return_date = fields.Date()
 
     def book_return(self):
         self.ensure_one()

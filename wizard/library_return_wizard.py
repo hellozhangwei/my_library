@@ -25,3 +25,23 @@ class LibraryReturnWizard(models.TransientModel):
              ('borrower_id', '=', self.borrower_id.id)]
         )
         self.book_ids = books_on_rent.mapped('book_id')
+
+        result = {
+            'domain': {'book_ids': [
+                ('id', 'in', self.book_ids.ids)]
+            }
+        }
+        late_domain = [
+            ('id', 'in', books_on_rent.ids),
+            ('expected_return_date', '<', fields.Date.today())
+        ]
+        late_books = rentModel.search(late_domain)
+        if late_books:
+            message = ('Warn the member that the following '
+                       'books are late:\n')
+            titles = late_books.mapped('book_id.name')
+            result['warning'] = {
+                'title': 'Late books',
+                'message': message + '\n'.join(titles)
+            }
+        return result
