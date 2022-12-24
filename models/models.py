@@ -127,7 +127,11 @@ class LibraryBook(models.Model):
         self.change_state('borrowed')
 
     def make_lost(self):
-        self.change_state('lost')
+        #self.change_state('lost')
+        self.ensure_one()
+        self.state = 'lost'
+        if not self.env.context.get('avoid_deactivate'):
+            self.active = False
 
     def book_rent(self):
         self.ensure_one()
