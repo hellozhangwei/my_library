@@ -9,10 +9,17 @@ class LibraryRentWizard(models.TransientModel):
     book_ids = fields.Many2many('library.book', string='Books')
 
     def add_book_rents(self):
-          rentModel = self.env['library.book.rent']
-          for wiz in self:
-              for book in wiz.book_ids:
-                  rentModel.create({
-                      'borrower_id': wiz.borrower_id.id,
-                      'book_id': book.id
-                  })
+        rentModel = self.env['library.book.rent']
+        for wiz in self:
+            for book in wiz.book_ids:
+                rentModel.create({
+                  'borrower_id': wiz.borrower_id.id,
+                  'book_id': book.id
+                })
+
+        members = self.mapped('borrower_id')
+        action = members.get_formview_action()
+        if len(members.ids) > 1:
+            action['domain'] = [('id', 'in', tuple(members.ids))]
+            action['view_mode'] = 'tree,form'
+        return action
