@@ -1,5 +1,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class BaseArchive(models.AbstractModel):
     _name = 'base.archive'
@@ -25,6 +28,7 @@ class BookCategory(models.Model):
 
     @api.constrains('parent_id')
     def _check_hierarchy(self):
+        _logger.info('==========_check_hierarchy==update===2==========')
         if not self._check_recursion():
             raise models.ValidationError('Error! You cannot create recursive categories.')
 
