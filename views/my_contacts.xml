@@ -1,0 +1,14 @@
+<odoo>
+    <record id="action_all_customers" model="ir.actions.act_window">
+        <field name="name">All customers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('customer_rank', '>', 0)]</field>
+        <field name="context">{'default_customer': True}</field>
+    </record>
+
+    <!--web_icon是app的图标，不是菜单的图标。该选项仅用于顶级菜单。它会在企业版本中显示应用的图标。-->
+    <menuitem id="menu_custom_top_level" name="My App menu" web_icon="my_library,static/description/icon.png"/>
+
+    <menuitem id="menu_all_customers" parent="menu_custom_top_level" action="action_all_customers" sequence="10"/>
+</odoo>

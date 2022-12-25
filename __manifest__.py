@@ -31,6 +31,7 @@
         'views/library_book_rent.xml',
         'views/library_book_statistics.xml',
         'views/templates.xml',
+        'views/my_contacts.xml',
         'wizard/library_book_rent_wizard.xml',
         'wizard/library_book_return_wizard.xml',
     ],
