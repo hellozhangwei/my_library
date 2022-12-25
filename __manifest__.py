@@ -29,6 +29,7 @@
         'security/ir.model.access.csv',
         'views/library_book.xml',
         'views/library_book_rent.xml',
+        'views/library_book_statistics.xml',
         'views/templates.xml',
         'wizard/library_book_rent_wizard.xml',
         'wizard/library_book_return_wizard.xml',

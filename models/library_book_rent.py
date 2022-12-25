@@ -18,7 +18,7 @@ class LibraryBookRent(models.Model):
 
     def book_return(self):
         self.ensure_one()
-        self.book_id.make_available()
+        #self.book_id.make_available()
         self.write({'state': 'returned', 'return_date': fields.Date.today()})
 
     #管理员在图书表单视图中报告为遗失时，图书记录的状态会变为 lost，书会被存档。
