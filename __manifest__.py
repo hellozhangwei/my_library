@@ -38,4 +38,6 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'post_init_hook': 'add_book_hook', #只有在安装的时候才被执行
+
 }

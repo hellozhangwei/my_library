@@ -21,6 +21,12 @@
         </field>
     </record>
 
-    <act_window id="action_wizard_rent_books" name="Give on Rent" res_model="library.rent.wizard" view_mode="form" target="new" />
+<!--    <act_window id="action_wizard_rent_books" name="Give on Rent" res_model="library.rent.wizard" view_mode="form" target="new" />-->
+
+        <record id='action_wizard_rent_books' model='ir.actions.act_window'>
+            <field name="name">Give on Rent</field>
+            <field name="res_model">library.rent.wizard</field>
+            <field name="view_mode">form</field>
+        </record>
     <menuitem id="menu_wizard_rent_books" parent="library_base_menu" action="action_wizard_rent_books" sequence="20" />
 </odoo>
