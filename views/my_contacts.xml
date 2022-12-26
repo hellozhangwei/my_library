@@ -30,6 +30,14 @@
                 <group>
                     <field name="name"/>
                 </group>
+                <notebook>
+                  <page string="Tab 1">
+                    <field name="phone"/>
+                  </page>
+                  <page string="Tab 2">
+                    <field name="email"/>
+                  </page>
+                </notebook>
             </form>
         </field>
     </record>
