@@ -27,6 +27,8 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <form>
+                <label for="name" />
+                <h1><field name="name" /></h1>
                 <group>
                     <field name="name"/>
                 </group>
