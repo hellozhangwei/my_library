@@ -1,5 +1,8 @@
 from odoo import http
 from odoo.http import request
+import email
+import datetime
+from odoo import fields
 
 class Main(http.Controller):
     @http.route(['/my_library/books'], type='http', auth='public')
@@ -9,7 +12,19 @@ class Main(http.Controller):
         for book in books:
             html_result += "<li> %s </li>" % book.name
         html_result += '</ul></body></html>'
-        return html_result
+
+        return request.make_response(
+            html_result, headers=[
+                ('Last-modified', email.utils.formatdate(
+                    (
+                            fields.Datetime.from_string(
+                                request.env['library.book'].sudo()
+                                    .search([], order='write_date desc', limit=1)
+                                    .write_date) -
+                            datetime.datetime(1970, 1, 1)
+                    ).total_seconds(),
+                    usegmt=True)),
+            ])
 
 
     @http.route('/my_library/books/json', type='json', auth='public')
