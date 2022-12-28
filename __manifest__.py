@@ -16,7 +16,7 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Uncategorized',
+    'category': 'Library', #odoo会为此处分类名创建一个小写的base.module_category_<声明文件中分类名称>XML ID，并将空格替换为下划线。这可以用于通过应用分类来关联安全组。本例中，我们使用了Library分类名，它生成了一个base.module_category_library的XML标识符。
     'version': '0.1',
 
     # any module necessary for this one to work correctly
@@ -26,6 +26,7 @@
     'data': [
         'data/data.xml',
         'security/groups.xml',
+        'security/library_security.xml',
         'security/ir.model.access.csv',
         'views/library_book.xml',
         'views/library_book_rent.xml',

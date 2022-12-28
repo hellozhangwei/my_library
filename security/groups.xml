@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
+    <record id="group_library_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="base.module_category_library"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
     <record id="group_librarian" model="res.groups">
         <field name="name">Librarians</field>
-        <field name="users" eval="[(4, ref('base.user_admin'))]" />
+        <field name="category_id" ref="base.module_category_library"/>
+        <field name="implied_ids" eval="[(4, ref('group_library_user'))]"/><!--任意用户分配Librarians组，该用户会自动的包含在上面的User组中，因为Librarian组的implied_ids字段中有User组。-->
+        <field name="users" eval="[(4, ref('base.user_admin'))]" /><!--it will get ids of the users of base.user_admin using ref -->
     </record>
 </odoo>
