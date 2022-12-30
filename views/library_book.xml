@@ -39,6 +39,7 @@
 
                         <field name="state" widget="statusbar"/>
                     </header>
+                    <sheet>
                     <group>
                         <group>
                             <field name="name"/>
@@ -70,6 +71,7 @@
                     <group>
                         <field name="description"/>
                     </group>
+                    </sheet>
                 </form>
             </field>
         </record>
