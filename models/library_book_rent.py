@@ -4,7 +4,7 @@ from odoo.tools.translate import _
 
 class LibraryBookRent(models.Model):
     _name = 'library.book.rent'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     book_id = fields.Many2one('library.book', 'Book', required=True)
     borrower_id = fields.Many2one('res.partner', 'Borrower',
